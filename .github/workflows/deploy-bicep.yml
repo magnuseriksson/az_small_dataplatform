@@ -1,0 +1,40 @@
+name: Deploy platform with bicep
+
+on:
+  push:
+    paths:
+      - 'platform/bicep/**'
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - stage
+          - prod
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Log into Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy Bicep file
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        scope: subscription
+        region: northeurope
+        template: platform/bicep/main.bicep
+        parameters: prefix=mypr env=${{ github.event.inputs.env || 'dev' }}
+        deploymentName: 'bicep-deploy-${{ github.run_id }}'
