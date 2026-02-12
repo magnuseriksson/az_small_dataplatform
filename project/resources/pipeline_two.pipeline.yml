@@ -1,0 +1,25 @@
+# Pipeline two
+
+resources:
+  pipelines:
+    pipeline_two:
+      name: pipeline_two
+      # Catalog is required for serverless compute
+      catalog: the_catalog
+      schema: bronze
+      serverless: true
+      root_path: "../src/pipeline_two"
+
+      configuration:
+        eventhub_namespace: ${var.eventhub_namespace}
+        eventhub_name: ${var.eventhub_name}
+
+      libraries:
+        - glob:
+            include: ../src/pipeline_two/transformations/**
+
+      environment:
+        dependencies:
+          # We include every dependency defined by pyproject.toml by defining an editable environment
+          # that points to the folder where pyproject.toml is deployed.
+          - --editable ${workspace.file_path}

@@ -1,5 +1,5 @@
 [project]
-name = "my_project"
+name = "project"
 version = "0.0.1"
 authors = [{ name = "magnus@mecoding.se" }]
 requires-python = ">=3.10,<=3.14"
@@ -24,3 +24,7 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 line-length = 120
+
+ [tool.hatch.build.targets.wheel]
+      packages = ["src"]
+

@@ -1,14 +1,14 @@
-# The main pipeline for my_project
+# pipeline one
 
 resources:
   pipelines:
-    my_project_etl:
-      name: my_project_etl
+    pipeline_one:
+      name: pipeline_one
       # Catalog is required for serverless compute
       catalog: the_catalog
       schema: bronze
       serverless: true
-      root_path: "../src/my_project"
+      root_path: "../src/pipeline_one"
 
       configuration:
         eventhub_namespace: ${var.eventhub_namespace}
@@ -16,7 +16,7 @@ resources:
 
       libraries:
         - glob:
-            include: ../src/my_project/transformations/**
+            include: ../src/pipeline_one/transformations/**
 
       environment:
         dependencies:
