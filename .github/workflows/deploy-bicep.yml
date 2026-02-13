@@ -16,9 +16,13 @@ on:
           - stage
           - prod
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.env || 'dev' }}
     steps:
 
@@ -28,11 +32,16 @@ jobs:
     - name: Log into Azure
       uses: azure/login@v2
       with:
-        auth-type: IDENTITY
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        enable-AzPSSession: false
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
 
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v1
