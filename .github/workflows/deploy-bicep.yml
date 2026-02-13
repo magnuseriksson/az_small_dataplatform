@@ -36,13 +36,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Azure CLI script
-      uses: azure/cli@v2
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
-
     - name: Deploy Bicep file
       uses: azure/arm-deploy@v1
       with:
@@ -50,5 +43,5 @@ jobs:
         scope: subscription
         region: northeurope
         template: platform/bicep/main.bicep
-        parameters: prefix=mypr env=${{ github.event.inputs.env || 'dev' }}
+        parameters: prefix=mypr env=${{ github.event.inputs.env || 'dev' }} resourceGroupName=${{ vars.RESOURCE_GROUP }}
         deploymentName: 'bicep-deploy-${{ github.run_id }}'

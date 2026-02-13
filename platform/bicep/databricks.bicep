@@ -13,6 +13,7 @@ resource databricksWorkspace 'Microsoft.Databricks/workspaces@2026-01-01' = {
   sku: { name: sku }
   properties: {
     managedResourceGroupId: managedResourceGroupId
+    computeMode: 'Hybrid'
     parameters: {
       customVirtualNetworkId: {
         value: vnetId
