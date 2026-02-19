@@ -61,7 +61,8 @@ resource nsgPublic 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
     ]
   }
 }
-
+// Note that the network rules to Databricks and sql and storage are added by Databricks on deploy if missing , but
+// to be able to keep idempotent we have to add them to our deploy, otherwise they are removed on a later deploy
 resource nsgPrivate 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
   name: '${vnetName}-private-nsg'
   location: location

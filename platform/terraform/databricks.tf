@@ -16,30 +16,12 @@ resource "azurerm_databricks_workspace" "dbks" {
   }
 }
 
-resource "azurerm_network_security_group" "nsg" {
-  name                = "${var.prefix}-nsg-${local.suffix}"
-  location            = azurerm_resource_group.rg.location
+resource "azurerm_databricks_access_connector" "acc" {
+  name                = "${var.prefix}-acc-${local.suffix}"
   resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
 
-  security_rule {
-    name                       = "databricks-worker-to-storage"
-    priority                   = 104
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "VirtualNetwork"
-    destination_address_prefix = "Storage"
+  identity {
+    type = "SystemAssigned"
   }
-}
-
-resource "azurerm_subnet_network_security_group_association" "public" {
-  subnet_id                 = azurerm_subnet.public.id
-  network_security_group_id = azurerm_network_security_group.nsg.id
-}
-
-resource "azurerm_subnet_network_security_group_association" "private" {
-  subnet_id                 = azurerm_subnet.private.id
-  network_security_group_id = azurerm_network_security_group.nsg.id
 }

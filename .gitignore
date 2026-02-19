@@ -7,3 +7,7 @@ __pycache__/
 .DS_Store
 .idea
 uv.lock
+/platform/terraform/.terraform.tfstate.lock.info
+/platform/terraform/.terraform.lock.hcl
+/platform/terraform/.terraform/
+/platform/terraform/terraform.tfstate

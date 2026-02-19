@@ -3,8 +3,7 @@
 #### This is a playground and an example of a dataplatform i Azure. 
 #### Its fully functional with examples of deployscripts both i Bicep and Terraform. 
 #### That are deployed using Github Actions.
-#### Ive also included some examples of notebooks using Data live table to build nice pipelines.
-#### And also included a working eventhub and stream analytics job to show how data can be streamed to a Datawarehouse.
+#### Ive also included some examples of notebooks using  to build nice pipelines.
 
 ## Azure Services used in this example
 
@@ -21,10 +20,7 @@
    #### There is then several options to save the data to our datalake 
       - Capture events and save to storage as avro direct to storage 
       - Capture events and save to storage as delta or parquet using Stream analytics job       
-      - Databricks Delta Live Tables and stream directly to our warehouse.
-
-- **Stream Analytics Job** 
-   #### Stream analytics job is used to save the data from Event Hubs to our warehouse in Delta format.
+      - Databricks and Spark declarative pipeline and stream directly to our warehouse.
 
 
 ### Access and security
@@ -40,13 +36,14 @@
    - Private subnet: `10.0.32.0/20` (delegated to Databricks)
 
 7. **Network Security Groups** (`Microsoft.Network/networkSecurityGroups`)
+    Note that Databricks adds the network rules it needs automatically when deployed, but because we want 
+    to keep the state between deployments we need to add them in our config , otherwise terraform wants to remove the rules. 
    - Public NSG with outbound rules for Databricks connectivity
    - Private NSG with outbound rules for Databricks connectivity
    - Rules for Storage, Event Hub, SQL access
+   - 
 
 ### RBAC Assignments
 
-- Storage Blob Data Contributor: Data Factory → Storage Account
 - Storage Blob Data Contributor: Databricks Access Connector → Storage Account
-- Event Hubs Data Receiver: Data Factory → Event Hub Namespace
 
