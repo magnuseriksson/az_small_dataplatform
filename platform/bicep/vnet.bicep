@@ -19,8 +19,8 @@ resource nsgPublic 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 100
         }
       }
-      {
-        name: 'databricks-worker-to-sql'
+      { // Databricks uses a managed MySQL for metastore, with port 3306
+        name: 'databricks-worker-to-metastore-sql'
         properties: {
           access: 'Allow'
           direction: 'Outbound'
@@ -32,7 +32,7 @@ resource nsgPublic 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 101
         }
       }
-      {
+      { // if we are using eventhub we need 9093 port allowed.
         name: 'databricks-worker-to-eventhub'
         properties: {
           access: 'Allow'
@@ -45,7 +45,7 @@ resource nsgPublic 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 103
         }
       }
-      {
+      { // Allow access from Databricks to storage on port 443
         name: 'databricks-worker-to-storage'
         properties: {
           access: 'Allow'
@@ -80,8 +80,8 @@ resource nsgPrivate 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 100
         }
       }
-      {
-        name: 'databricks-worker-to-sql'
+      {// Databricks uses a managed MySQL for metastore, with port 3306
+        name: 'databricks-worker-to-metastore-sql'
         properties: {
           access: 'Allow'
           direction: 'Outbound'
@@ -93,7 +93,7 @@ resource nsgPrivate 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 101
         }
       }
-      {
+      { // if we are using eventhub we need 9093 port allowed.
         name: 'databricks-worker-to-eventhub'
         properties: {
           access: 'Allow'
@@ -106,7 +106,7 @@ resource nsgPrivate 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 103
         }
       }
-      {
+      { // Allow access from Databricks to storage on port 443
         name: 'databricks-worker-to-storage'
         properties: {
           access: 'Allow'
@@ -190,5 +190,5 @@ resource virtualNetworks_private_subnet 'Microsoft.Network/virtualNetworks/subne
 }
 
 output virtualNetworkId string = virtualNetwork.id
-output pubSubnetName string = 'public'
-output privSubnetName string = 'private'
+output pubSubnetName string = virtualNetworks_public_subnet.name
+output privSubnetName string = virtualNetworks_private_subnet.name
