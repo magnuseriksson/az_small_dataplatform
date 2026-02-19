@@ -117,7 +117,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2025-05-01' = {
 }
 
 resource virtualNetworks_public_subnet 'Microsoft.Network/virtualNetworks/subnets@2025-05-01' = {
-  name: '${vnetName}/public'
+  parent:virtualNetwork
+  name: 'public'
   properties: {
     addressPrefixes: [
       '10.0.0.0/20'
@@ -136,14 +137,12 @@ resource virtualNetworks_public_subnet 'Microsoft.Network/virtualNetworks/subnet
     privateEndpointNetworkPolicies: 'Disabled'
     privateLinkServiceNetworkPolicies: 'Enabled'
   }
-  dependsOn: [
-    virtualNetwork
-  ]
 }
 
 
 resource virtualNetworks_private_subnet 'Microsoft.Network/virtualNetworks/subnets@2025-05-01' = {
-  name: '${vnetName}/private'
+  parent:virtualNetwork
+  name: 'private'
   properties: {
     addressPrefixes: [
       '10.0.32.0/20'
@@ -162,9 +161,6 @@ resource virtualNetworks_private_subnet 'Microsoft.Network/virtualNetworks/subne
     privateEndpointNetworkPolicies: 'Disabled'
     privateLinkServiceNetworkPolicies: 'Enabled'
   }
-  dependsOn: [
-    virtualNetwork
-  ]
 }
 
 output virtualNetworkId string = virtualNetwork.id
