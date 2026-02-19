@@ -1,9 +1,10 @@
+# Here we configure databricks workspace
 resource "azurerm_databricks_workspace" "dbks" {
-  name                        = "${var.prefix}-dbks-${local.suffix}"
-  resource_group_name         = azurerm_resource_group.rg.name
-  location                    = azurerm_resource_group.rg.location
+  name                        = var.workspace_name
+  resource_group_name         = var.resource_group_name
+  location                    = var.location
   sku                         = "premium"
-  managed_resource_group_name = "rg-dbks-managed-rg-${local.suffix}"
+  managed_resource_group_name = var.managed_resource_group_name
 
   custom_parameters {
     no_public_ip        = true
@@ -17,10 +18,9 @@ resource "azurerm_databricks_workspace" "dbks" {
 }
 
 resource "azurerm_databricks_access_connector" "acc" {
-  name                = "${var.prefix}-acc-${local.suffix}"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-
+  name                = "${var.workspace_name}-acc"
+  resource_group_name = var.resource_group_name
+  location            = var.location
   identity {
     type = "SystemAssigned"
   }

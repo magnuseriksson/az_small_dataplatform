@@ -11,3 +11,4 @@ uv.lock
 /platform/terraform/.terraform.lock.hcl
 /platform/terraform/.terraform/
 /platform/terraform/terraform.tfstate
+/platform/terraform/main.tfplan
