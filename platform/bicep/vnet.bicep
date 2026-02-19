@@ -45,6 +45,19 @@ resource nsgPublic 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           priority: 103
         }
       }
+      {
+        name: 'databricks-worker-to-storage'
+        properties: {
+          access: 'Allow'
+          direction: 'Outbound'
+          protocol: 'Tcp'
+          sourceAddressPrefix: 'VirtualNetwork'
+          sourcePortRange: '*'
+          destinationAddressPrefix: 'Storage'
+          destinationPortRange: '443'
+          priority: 104
+        }
+      }
     ]
   }
 }
@@ -91,6 +104,19 @@ resource nsgPrivate 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
           destinationAddressPrefix: 'EventHub'
           destinationPortRange: '9093'
           priority: 103
+        }
+      }
+      {
+        name: 'databricks-worker-to-storage'
+        properties: {
+          access: 'Allow'
+          direction: 'Outbound'
+          protocol: 'Tcp'
+          sourceAddressPrefix: 'VirtualNetwork'
+          sourcePortRange: '*'
+          destinationAddressPrefix: 'Storage'
+          destinationPortRange: '443'
+          priority: 104
         }
       }
     ]
