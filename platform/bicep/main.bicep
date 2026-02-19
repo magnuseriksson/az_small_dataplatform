@@ -21,7 +21,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
 var uniqueSuffix = '${uniqueString(rg.id)}-${env}'
 
 
-module vnet './vnet.bicep' = {
+module vnet './databricks_vnet.bicep' = {
   name: 'VnetDeploy'
   scope: rg
   params: {
